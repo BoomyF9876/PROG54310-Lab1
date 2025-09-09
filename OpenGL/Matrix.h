@@ -1,21 +1,19 @@
 #pragma once
-#include <iostream>
 #include <vector>
 
 using namespace std;
 class Matrix {
-	public:
-		vector<vector<float>> m;
-		int row, col;
-		float gap;
+public:
+	vector<vector<float>> m;
+	int row, col;
 	
-		Matrix(int _row, int _col, float _gap = 0.5f);
-		Matrix(vector<vector<float>> _m);
-		~Matrix();
+	Matrix(float _gap, int _row, int _col);
+	Matrix(vector<vector<float>> _m);
+	~Matrix();
 
-		Matrix operator+(Matrix& _m1, Matrix& _m2);
-		Matrix operator-(Matrix& _m1, Matrix& _m2);
-		Matrix operator*(Matrix& _m1, Matrix& _m2);
+	Matrix operator+(Matrix& _m);
+	Matrix operator-(Matrix& _m);
+	Matrix operator*(Matrix& _m);
 
-		void print();
+	void print();
 };

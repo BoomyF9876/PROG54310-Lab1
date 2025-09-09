@@ -6,7 +6,7 @@
 using std::vector;
 using std::cout;
 
-Matrix::Matrix(int _row, int _col, float _gap): row(_row), col(_col), gap(_gap)
+Matrix::Matrix(float _gap, int _row, int _col): row(_row), col(_col)
 {
 	m.resize(row);
 	for (auto& _r : m) {
@@ -18,7 +18,7 @@ Matrix::Matrix(int _row, int _col, float _gap): row(_row), col(_col), gap(_gap)
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < col; j++) {
 			m[i][j] = val;
-			val += gap;
+			val += _gap;
 		}
 	}
 }
@@ -27,35 +27,36 @@ Matrix::Matrix(vector<vector<float>> _m): m(_m), row(_m.size()), col(_m[0].size(
 
 Matrix::~Matrix() {}
 
-Matrix Matrix::operator+(Matrix& _m1, Matrix& _m2)
+Matrix Matrix::operator+(Matrix& _m)
 {
-	assert(_m1.row == _m2.row && _m1.col == _m2.col);
-	vector<vector<float>> result(_m1.row, vector<float>(_m1.col, 0));
-	for (int i = 0; i < _m1.row; i++) {
-		for (int j = 0; j < _m1.col; j++) {
-			result[i][j] = _m1.m[i][j] + _m2.m[i][j];
+	assert(row == _m.row && col == _m.col);
+	vector<vector<float>> result(row, vector<float>(col, 0));
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			result[i][j] = m[i][j] + _m.m[i][j];
 		}
 	}
 
 	return Matrix(result);
 }
-Matrix& Matrix::operator-=(Matrix& _matrix)
+Matrix Matrix::operator-(Matrix& _m)
 {
-	assert(row == _matrix.row && col == _matrix.col);
+	assert(row == _m.row && col == _m.col);
+	vector<vector<float>> result(row, vector<float>(col, 0));
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < col; j++) {
-			m[i][j] -= _matrix.m[i][j];
+			result[i][j] = m[i][j] - _m.m[i][j];
 		}
 	}
 
-	return *this;
+	return Matrix(result);
 }
 Matrix Matrix::operator*(Matrix& _m)
 {
 	assert(col == _m.row);
 
 	float new_value;
-	vector<vector<float>> result(row, vector<float>(col, 0));
+	vector<vector<float>> result(row, vector<float>(_m.col, 0));
 	
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < _m.col; j++) {
